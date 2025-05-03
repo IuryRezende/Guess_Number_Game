@@ -4,66 +4,90 @@ function randomic(){
     return Math.trunc(Math.random()*20) + 1;
 }
 
+function multiple_listener(events, element, handler){
+    events.forEach(event => element.addEventListener(event, handler));
+}
+
 let random_num = randomic();
 console.log(random_num + " <-- random num");
 
-let score = 20
-let highscore = 0;
-console.log(`Score: ${score}\t\tHighscore: ${highscore}`);
+let attempt_count = 1;
+let highscore_count = 20;
 
-document.querySelector(".check").addEventListener("click", () => {
+const mensagem = document.querySelector(".message");
+const secret_number = document.querySelector(".number");
+const attempt = document.querySelector(".attempt");
+const highscore = document.querySelector(".highscore");
+const btnCheck = document.querySelector(".check");
+const btnAgain = document.querySelector(".again");
+
+const setMensagem = (text) => mensagem.textContent = text;
+
+const guessVerifier = () => {
     const guess = Number(document.querySelector(".guess").value);
 
-    if (!guess)
+    if (!guess || guess > 20)
     {
-        document.querySelector(".message").textContent = "⚠️Insert a number...";
-        console.warn(`Number guessed = NaN`);
+        setMensagem("Insert a valid number...");
+        !guess ? console.error("Number = NaN") : console.warn("Number out of the limit");
     }
     else if (guess === random_num)
     {
+        secret_number.style.width = "30rem";
+        secret_number.textContent = guess;
+        setMensagem("You win🎉🎉🎉");
         document.body.style.backgroundColor = "#60b347";
-        document.querySelector(".number").style.width = "30rem";
-        document.querySelector(".number").textContent = guess;
-        document.querySelector(".message").textContent = "You win🎉🎉🎉";
+        btnCheck.style.pointerEvents = "none";
 
-        if (score >= highscore)
+        if (attempt_count < highscore_count)
         {
-            console.log(`Return: ${score >= highscore}`);
-            highscore = score;
-
-            console.log(`Highscore: ${highscore}`);
-            document.querySelector(".highscore").textContent = highscore;
+            highscore_count = attempt_count;
+            highscore.textContent = highscore_count;
         }   
     }
     else{
-        if (score != 0)
+        if (attempt_count < 19)
         {
-            document.querySelector(".message").textContent = guess > random_num ? "📈Too high" : "📉Too low";
-            score-=1;
-            document.querySelector(".score").textContent = score;
+            setMensagem(guess > random_num ? "📈Too high" : "📉Too low");
+            attempt_count++;
+            attempt.textContent = attempt_count;
         } else {
             document.body.style.backgroundColor = "darkred";
-            document.querySelector(".message").innerHTML = `You lose😑😑<br>Press "again", to restart!`;
-            document.querySelector(".check").style.pointerEvents = "none";
+            mensagem.innerHTML = `You lose😑😑<br>Press "again", to restart!`;
+            attempt.textContent = attempt_count + 1;
+            btnCheck.style.pointerEvents = "none";
+
         }
     }
+}
 
-});
-
-document.querySelector(".again").addEventListener("click", () =>{
+const reset = () => {
     document.querySelectorAll("*").forEach(element => {
         element.removeAttribute("style");
     });
-
     random_num = randomic();
     console.log(random_num);
-    score = 20;
-    document.querySelector(".number").textContent = "?";
-    document.querySelector(".score").textContent = score;
-    document.querySelector(".message").textContent = "Start guessing...";
+    attempt_count = 0;
+    secret_number.textContent = "?";
+    attempt.textContent = attempt_count;
+    setMensagem("Start guessing...");
     document.querySelector(".guess").value = "";
+}
 
-});
+document.querySelector(".guess").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") guessVerifier();
+})
+
+btnCheck.addEventListener("click", guessVerifier);
+
+btnAgain.addEventListener("click", reset);
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "r")
+    {
+        reset();
+    }
+})
 
 
 
