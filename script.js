@@ -16,7 +16,7 @@ document.querySelector(".check").addEventListener("click", () => {
 
     if (!guess)
     {
-        document.querySelector(".message").textContent = "You're dumb!!";
+        document.querySelector(".message").textContent = "Insert a number...";
     }
     else if (guess === random_num)
     {
@@ -32,9 +32,6 @@ document.querySelector(".check").addEventListener("click", () => {
 
             console.log(`Highscore: ${highscore}`);
             document.querySelector(".highscore").textContent = highscore;
-
-            score = 20
-            document.querySelector(".score").textContent = score;
         }   
     }
     else if (guess > random_num)
@@ -65,9 +62,11 @@ document.querySelector(".again").addEventListener("click", () =>{
 
     random_num = randomic();
     console.log(random_num);
+    score = 20;
     document.querySelector(".number").textContent = "?";
-    document.querySelector(".score").textContent = "20";
+    document.querySelector(".score").textContent = score;
     document.querySelector(".message").textContent = "Start guessing...";
+
 });
 
 
