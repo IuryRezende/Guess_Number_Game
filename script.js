@@ -35,25 +35,19 @@ document.querySelector(".check").addEventListener("click", () => {
             document.querySelector(".highscore").textContent = highscore;
         }   
     }
-    else if (guess > random_num)
-    {
-        document.querySelector(".message").textContent = "📈Too high";
-        score-=1;
-        document.querySelector(".score").textContent = score;
-    }
-    else
-    {
-        document.querySelector(".message").textContent = "📉Too low";
-        score-=1;
-        document.querySelector(".score").textContent = score;
+    else{
+        if (score != 0)
+        {
+            document.querySelector(".message").textContent = guess > random_num ? "📈Too high" : "📉Too low";
+            score-=1;
+            document.querySelector(".score").textContent = score;
+        } else {
+            document.body.style.backgroundColor = "darkred";
+            document.querySelector(".message").innerHTML = `You lose😑😑<br>Press "again", to restart!`;
+            document.querySelector(".check").style.pointerEvents = "none";
+        }
     }
 
-    if(score <= 0)
-    {
-        document.body.style.backgroundColor = "darkred";
-        document.querySelector(".message").innerHTML = `You lose😑😑<br>Press "again", to restart!`;
-        document.querySelector(".check").style.pointerEvents = "none";
-    }
 });
 
 document.querySelector(".again").addEventListener("click", () =>{
