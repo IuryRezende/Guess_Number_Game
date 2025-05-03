@@ -16,7 +16,8 @@ document.querySelector(".check").addEventListener("click", () => {
 
     if (!guess)
     {
-        document.querySelector(".message").textContent = "Insert a number...";
+        document.querySelector(".message").textContent = "⚠️Insert a number...";
+        console.warn(`Number guessed = NaN`);
     }
     else if (guess === random_num)
     {
@@ -50,7 +51,7 @@ document.querySelector(".check").addEventListener("click", () => {
     if(score <= 0)
     {
         document.body.style.backgroundColor = "darkred";
-        document.querySelector(".message").innerHTML = `You lose😑😑🙄<br>Press "again", to restart!`;
+        document.querySelector(".message").innerHTML = `You lose😑😑<br>Press "again", to restart!`;
         document.querySelector(".check").style.pointerEvents = "none";
     }
 });
@@ -66,6 +67,7 @@ document.querySelector(".again").addEventListener("click", () =>{
     document.querySelector(".number").textContent = "?";
     document.querySelector(".score").textContent = score;
     document.querySelector(".message").textContent = "Start guessing...";
+    document.querySelector(".guess").value = "";
 
 });
 
